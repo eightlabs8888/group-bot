@@ -1,8 +1,8 @@
 const { MongoClient } = require('mongodb');
 const logger = require('../../../utils/logger');
+const config = require('../../../config');
 
-// Reuse your existing connection string
-const MONGO_URI = 'mongodb://noelmarko80_db_user:RNDiIqTlY1UCmHP8@ac-nqrlw8n-shard-00-00.oyx2r3j.mongodb.net:27017,ac-nqrlw8n-shard-00-01.oyx2r3j.mongodb.net:27017,ac-nqrlw8n-shard-00-02.oyx2r3j.mongodb.net:27017/?ssl=true&replicaSet=atlas-mg5t14-shard-0&authSource=admin&appName=Cluster01';
+const MONGO_URI = config.MONGO_URI;
 const DB_NAME = 'whatsapp_bot';
 const HISTORY_COLLECTION = 'group_history';
 
