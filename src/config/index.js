@@ -46,5 +46,8 @@ module.exports = {
     // ─── LOGGING ─────────────────────────────────────────────
     LOG_LEVEL: process.env.LOG_LEVEL,
     QR_CODE_MESSAGE: process.env.QR_CODE_MESSAGE || '🔐 SCAN THIS QR CODE WITH YOUR WHATSAPP:',
-    QR_CODE_VALIDITY_MESSAGE: process.env.QR_CODE_VALIDITY_MESSAGE || '⏳ QR Code valid for 60 seconds...'
+    QR_CODE_VALIDITY_MESSAGE: process.env.QR_CODE_VALIDITY_MESSAGE || '⏳ QR Code valid for 60 seconds...',
+
+    // ─── MONGODB ─────────────────────────────────────────────
+    MONGO_URI: process.env.MONGO_URI,
 };
