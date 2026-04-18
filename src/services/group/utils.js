@@ -2,6 +2,12 @@ const config = require('../../config');
 
 function isBotTagged(msg) {
     try {
+        // First check if message starts with dot - if yes, ignore completely
+        const messageText = getMessageText(msg);
+        if (messageText.startsWith('.')) {
+            return false;
+        }
+        
         const contextInfo = msg.message?.extendedTextMessage?.contextInfo;
         if (!contextInfo) return false;
         
@@ -20,7 +26,6 @@ function isBotTagged(msg) {
         if (!isBotMentioned) return false;
         
         // Check if tag is at the beginning of the message
-        const messageText = getMessageText(msg);
         const botTagPlain = `@${config.BOT_NUMBER}`;
         const botTagLid = `@${config.BOT_LID}`;
         
@@ -43,7 +48,7 @@ function getSenderName(msg) {
 function getMessageText(msg) {
     const text = msg.message?.conversation ||
                  msg.message?.extendedTextMessage?.text || '';
-    return text.trim();
+    return text;
 }
 
 async function sendWithRetry(sock, jid, replyText, maxRetries = 5, delayMs = 3000) {
@@ -59,4 +64,9 @@ async function sendWithRetry(sock, jid, replyText, maxRetries = 5, delayMs = 300
     return false;
 }
 
-module.exports = { isBotTagged, getSenderName, getMessageText, sendWithRetry };
+function shouldIgnoreMessage(msg) {
+    const messageText = getMessageText(msg);
+    return messageText.startsWith('.');
+}
+
+module.exports = { isBotTagged, getSenderName, getMessageText, sendWithRetry, shouldIgnoreMessage };
