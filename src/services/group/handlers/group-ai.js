@@ -1,4 +1,4 @@
-const { isBotTagged, getSenderName, getMessageText, sendWithRetry } = require('../utils');
+const { isBotTagged, getSenderName, getMessageText, sendWithRetry, shouldIgnoreMessage } = require('../utils');
 const { saveMessage, getLastMessages } = require('../database/group-db');
 const { buildHistory } = require('../history/builder');
 const { callGroupAI } = require('../ai/github');
@@ -8,10 +8,15 @@ async function handleGroupAI(sock, msg, groupJid) {
     const senderName = getSenderName(msg);
     const messageText = getMessageText(msg);
     const isTagged = isBotTagged(msg);
+    
+    // Check if message starts with dot - ignore completely, don't store
+    if (shouldIgnoreMessage(msg)) {
+        return;
+    }
 
     if (!messageText) return;
 
-    // Store every message
+    // Store every message (only non-dot-prefixed messages reach here)
     await saveMessage(groupJid, senderJid, senderName, messageText, 'user', isTagged ? 1 : 0);
 
     // Only respond if tagged
