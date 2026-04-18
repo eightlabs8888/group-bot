@@ -11,11 +11,26 @@ function isBotTagged(msg) {
         const botJid = config.BOT_NUMBER_JID;
         const botLidJid = config.BOT_LID_JID;
         
-        return mentionedJids.some(jid => 
+        const isBotMentioned = mentionedJids.some(jid => 
             jid === botJid || 
             jid === botLidJid ||
             jid.includes(config.BOT_LID)
         );
+        
+        if (!isBotMentioned) return false;
+        
+        // Check if tag is at the beginning of the message
+        const messageText = getMessageText(msg);
+        const botTagPlain = `@${config.BOT_NUMBER}`;
+        const botTagLid = `@${config.BOT_LID}`;
+        
+        // Remove leading spaces and check if message starts with @botnumber or @botlid
+        const trimmedStart = messageText.trimStart();
+        const startsWithBotTag = trimmedStart.startsWith(botTagPlain) || 
+                                  trimmedStart.startsWith(botTagLid);
+        
+        return startsWithBotTag;
+        
     } catch (err) {
         return false;
     }
